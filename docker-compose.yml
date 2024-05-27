@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  pgdb-log-project:
+    container_name: pgdb-log-project
+    image: postgres:15
+    restart: always
+    volumes:
+      - pgdatabase:/var/lib/postgresql/data/
+    env_file:
+      - .env
+    ports:
+      - '5433:5432'
+    networks:
+      - pg
+volumes:
+  pgdatabase:
