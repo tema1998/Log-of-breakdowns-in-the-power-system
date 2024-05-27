@@ -1,4 +1,5 @@
-# Authentication FastAPI microservice
+# Log of breakdowns in the power system with notification ow workers.
+# In process of development.
 
 ### Built with
 
@@ -6,13 +7,6 @@
 * ![Fastapi][Fastapi]
 * ![PostgreSQL][PostgreSQL]
 * ![Uvicorn][Uvicorn]
-
-
-Functions |
--- |
-`SignUp` |
-`SignIn` |
-`Logout` |
 
 
 ## Run development server
