@@ -11,7 +11,5 @@ services:
       - .env
     ports:
       - '5433:5432'
-    networks:
-      - pg
 volumes:
   pgdatabase:
