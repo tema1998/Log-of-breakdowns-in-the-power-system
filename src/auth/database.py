@@ -5,7 +5,7 @@ from fastapi import Depends
 from fastapi_users.db import SQLAlchemyUserDatabase
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable, SQLAlchemyBaseOAuthAccountTableUUID, \
     SQLAlchemyBaseOAuthAccountTable
-from sqlalchemy import Integer, String, Boolean, Column, ForeignKey, TIMESTAMP
+from sqlalchemy import Integer, String, Boolean, Column, ForeignKey, TIMESTAMP, JSON
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, relationship, mapped_column, declared_attr
 from config import DB_USER, DB_NAME, DB_PASS, DB_PORT, DB_HOST
@@ -26,7 +26,17 @@ class OAuthAccount(SQLAlchemyBaseOAuthAccountTable[int], Base):
         return mapped_column(Integer, ForeignKey("user.id", ondelete="cascade"), nullable=False)
 
 
+class Role(Base):
+    __tablename__ = 'role'
+
+    id = Column("id", Integer, primary_key=True)
+    name = Column("name", String, nullable=False)
+    permissions = Column("permissions", JSON, nullable=False)
+
+
 class User(SQLAlchemyBaseUserTable[int], Base):
+    __tablename__ = 'user'
+
     id = Column("id", Integer, primary_key=True)
     username = Column("username", String, nullable=False)
     registered_at = Column("registered_at", TIMESTAMP, default=datetime.utcnow)
