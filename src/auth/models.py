@@ -1,17 +1,14 @@
 from datetime import datetime
-from typing import AsyncGenerator, List
+from typing import List
 
 from fastapi import Depends
 from fastapi_users.db import SQLAlchemyUserDatabase
-from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable, SQLAlchemyBaseOAuthAccountTableUUID, \
+from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable, \
     SQLAlchemyBaseOAuthAccountTable
 from sqlalchemy import Integer, String, Boolean, Column, ForeignKey, TIMESTAMP, JSON
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import DeclarativeBase, Mapped, relationship, mapped_column, declared_attr
-from config import DB_USER, DB_NAME, DB_PASS, DB_PORT, DB_HOST
-
-
-DATABASE_URL = f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+from database import get_async_session
 
 
 class Base(DeclarativeBase):
@@ -58,15 +55,6 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     oauth_accounts: Mapped[List[OAuthAccount]] = relationship(
         "OAuthAccount", lazy="joined"
     )
-
-
-engine = create_async_engine(DATABASE_URL)
-async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
-
-
-async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
-    async with async_session_maker() as session:
-        yield session
 
 
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):
