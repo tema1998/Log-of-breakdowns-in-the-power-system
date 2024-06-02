@@ -3,7 +3,7 @@ from fastapi_users.authentication import CookieTransport, JWTStrategy, Authentic
 
 from auth.manager import get_user_manager
 from config import GOOGLE_CLIENT, GOOGLE_SECRET
-from auth.database import User
+from auth.models import User
 from httpx_oauth.clients.google import GoogleOAuth2
 
 cookie_transport = CookieTransport(cookie_name="temas_cookies", cookie_max_age=3600)

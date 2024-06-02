@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import Table, Column, Integer, String, ForeignKey, Boolean, DateTime, func
 from sqlalchemy.orm import DeclarativeBase, relationship, backref
 
-from auth.database import Base
+from auth.models import Base
 
 
 metadata = Base.metadata
