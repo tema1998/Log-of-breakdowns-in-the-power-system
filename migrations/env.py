@@ -7,8 +7,7 @@ from sqlalchemy import pool
 from alembic import context
 
 sys.path.append(os.path.join(sys.path[0], 'src'))
-from src.auth.database import Base as base_auth
-from src.breakdowns_log.models import metadata as metadata_breakdowns
+from src.breakdowns_log.models import Base as base_auth_and_breakdowns
 from src.config import DB_HOST, DB_NAME, DB_PASS, DB_PORT, DB_USER
 
 
@@ -29,7 +28,7 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 
-target_metadata = [base_auth.metadata, metadata_breakdowns]
+target_metadata = [base_auth_and_breakdowns.metadata]
 
 
 def run_migrations_offline() -> None:
