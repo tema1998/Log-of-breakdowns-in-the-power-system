@@ -37,19 +37,7 @@ class ElectricityObject(Base):
     address = Column(String, nullable=False)
     created_at = Column(DateTime(timezone=True), default=func.now())
     workers = relationship('Worker', secondary=worker_object_association, back_populates='electricity_objects')
-    breakdonws = relationship("Breakdown", back_populates="electricity_objects")
-
-
-breakdown = Table(
-    'defect',
-    metadata,
-    Column("id", Integer, primary_key=True),
-    Column("name", String, nullable=False),
-    Column("address", String, nullable=False),
-    Column("description", String, nullable=False),
-    Column("fixed", String, default=False),
-    Column("who_fixed", String, nullable=True),
-)
+    breakdowns = relationship("Breakdown", back_populates="electricity_objects")
 
 
 class Breakdown(Base):
@@ -57,7 +45,7 @@ class Breakdown(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     electricity_object_id = Column(Integer, ForeignKey("electricity_object.id"))
-    electricity_object = relationship("ElectricityObject", back_populates="breakdowns")
+    electricity_objects = relationship("ElectricityObject", back_populates="breakdowns")
     description = Column(String, nullable=True)
     created_at = Column(DateTime(timezone=True), default=func.now())
     fixed = Column(Boolean, default=False)
