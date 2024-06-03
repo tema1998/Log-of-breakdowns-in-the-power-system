@@ -6,7 +6,7 @@ from pydantic import BaseModel
 
 class BreakdownRead(BaseModel):
     """
-    Pydantic model for mapping of Movie model.
+    Pydantic model for mapping of Breakdown model.
     """
     id: int
     name: str
