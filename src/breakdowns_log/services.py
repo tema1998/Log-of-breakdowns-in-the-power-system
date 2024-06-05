@@ -31,12 +31,8 @@ async def add(
     ) -> Any:
 
     breakdown_data = breakdown.dict()
-    # # user_data = schemas.User.from_orm(current_user).dict()
-    # # breakdown_data["author_id"] = user_data["id"]
-    # db_breakdown = models.Breakdown(**breakdown_data)
-    # db.add(db_breakdown)
-    # db.commit()
+    breakdown_data["author_id"] = 1
 
-    stmt = insert(Breakdown).values(**breakdown_data)
-    await db.execute(stmt)
+    query = insert(Breakdown).values(**breakdown_data)
+    await db.execute(query)
     await db.commit()

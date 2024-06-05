@@ -12,6 +12,7 @@ class BreakdownInDB(BaseModel):
     name: str
     electricity_object_id: int
     description: str
+    author: Optional[int] = None
     created_at: datetime.datetime
     fixed: bool
     worker_fixed_id: Optional[int] = None

@@ -16,6 +16,22 @@ worker_object_association = Table(
 )
 
 
+class Breakdown(Base):
+    __tablename__ = 'breakdown'
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    electricity_object_id = Column(Integer, ForeignKey("electricity_object.id"))
+    electricity_objects = relationship("ElectricityObject", back_populates="breakdowns")
+    description = Column(String, nullable=True)
+    author_id = Column(Integer, ForeignKey("worker.id"))
+    author = relationship("Worker", back_populates="breakdowns_created", foreign_keys=[author_id])
+    created_at = Column(DateTime(timezone=True), default=func.now())
+    fixed = Column(Boolean, default=False)
+    worker_fixed_id = Column(Integer, ForeignKey("worker.id"))
+    worker_fixed = relationship("Worker", back_populates="breakdowns_fixed", foreign_keys=[worker_fixed_id])
+    fixed_at = Column(DateTime(timezone=True), nullable=True)
+
+
 class Worker(Base):
     __tablename__ = 'worker'
     id = Column(Integer, primary_key=True)
@@ -27,6 +43,8 @@ class Worker(Base):
     phone = Column(String, nullable=False)
     created_at = Column(DateTime(timezone=True), default=func.now())
     electricity_objects = relationship('ElectricityObject', secondary=worker_object_association, back_populates='workers')
+    breakdowns_created = relationship("Breakdown", back_populates="author", foreign_keys=[Breakdown.author_id])
+    breakdowns_fixed = relationship("Breakdown", back_populates="worker_fixed", foreign_keys=[Breakdown.worker_fixed_id])
 
 
 class ElectricityObject(Base):
@@ -40,17 +58,7 @@ class ElectricityObject(Base):
     breakdowns = relationship("Breakdown", back_populates="electricity_objects")
 
 
-class Breakdown(Base):
-    __tablename__ = 'breakdown'
-    id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-    electricity_object_id = Column(Integer, ForeignKey("electricity_object.id"))
-    electricity_objects = relationship("ElectricityObject", back_populates="breakdowns")
-    description = Column(String, nullable=True)
-    created_at = Column(DateTime(timezone=True), default=func.now())
-    fixed = Column(Boolean, default=False)
-    worker_fixed_id = Column(Integer, ForeignKey("worker.id"))
-    fixed_at = Column(DateTime(timezone=True), nullable=True)
+
 
 
 
